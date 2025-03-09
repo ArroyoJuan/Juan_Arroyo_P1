@@ -1,3 +1,5 @@
+using Juan_Arroyo_P1.Models;
+
 namespace Juan_Arroyo_P1
 {
     public class Program
@@ -8,6 +10,8 @@ namespace Juan_Arroyo_P1
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddSingleton<AccesoDatos>();
 
             var app = builder.Build();
 
