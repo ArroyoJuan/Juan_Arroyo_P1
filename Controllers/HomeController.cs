@@ -15,12 +15,31 @@ namespace Juan_Arroyo_P1.Controllers
             _datos = datos;
             _logger = logger;
         }
+        public IActionResult Index()
+        {
+            return View();
+        }
         [HttpPost]
-        public IActionResult Buscar(Pacientes pacientes)
+        public IActionResult Agendar(Datos datos)
         {
             try
             {
-                if (_datos.BuscarPaciente_v2(pacientes.cedula) == "Paciente encontrado.")
+                _datos.IngresarCita(datos);
+                TempData["SuccessMessage"] = "Tu cita se guardo con exito.";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error: " + ex.Message;
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+        public IActionResult buscar(Datos datos)
+        {
+            try
+            {
+                if (_datos.BuscarPaciente(datos) == "Paciente encontrado.")
                 {
                     TempData["SuccessMessage"] = "Paciente encontrado.";
                     return RedirectToAction("Index");
@@ -30,31 +49,13 @@ namespace Juan_Arroyo_P1.Controllers
                     TempData["ErrorMessage"] = "Error: El paciente no existe.";
                     return RedirectToAction("Index");
                 }
-
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error: " + ex.Message;
                 return RedirectToAction("Index");
             }
-        }
-        public IActionResult Agendar(Citas citas)
-        {
-            try
-            {
-                TempData["SuccessMessage"] = "Paciente encontrado.";
-                return RedirectToAction("Index");
-
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "Error: " + ex.Message;
-                return RedirectToAction("Index");
-            }
-        }
-        public IActionResult Index()
-        {
-            return View();
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()

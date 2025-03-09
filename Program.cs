@@ -12,6 +12,7 @@ namespace Juan_Arroyo_P1
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddSingleton<AccesoDatos>();
+            builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
