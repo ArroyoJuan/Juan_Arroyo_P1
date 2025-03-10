@@ -139,6 +139,47 @@ namespace Juan_Arroyo_P1.Models
                 }
             }
         }
+
+
+        public List<Datos> cargarCitas(string fecha)
+        {
+            List<Datos> citas = new List<Datos>();
+            using (SqlConnection conn = new SqlConnection(_conexion))
+            {
+                try
+                {
+                    string query = "Exec sp_Obtener_Citas_Del_Dia @fecha";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@fecha", fecha);
+
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Datos cita = new Datos
+                                {
+                                    cedulaP = Convert.ToString(reader["cedula"]),
+                                    nombreP = Convert.ToString(reader["nombre"]),
+                                    apellidoP = Convert.ToString(reader["apellido"]),
+                                    motivo_consultaC = Convert.ToString(reader["motivo_consulta"]),
+                                    fecha_horaC = Convert.ToDateTime(reader["fecha_hora"]),
+                                    estadoC = Convert.ToString(reader["estado"])
+                                };
+                                citas.Add(cita);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al cargar las citas: " + ex.Message);
+                }
+            }
+            return citas;
+        }
+
         /*public List<Datos> cargarCitas(string fechaNow)
         {
             List<Datos> listaDatos = new List<Datos>();

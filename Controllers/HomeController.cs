@@ -22,6 +22,10 @@ namespace Juan_Arroyo_P1.Controllers
         }
         public IActionResult Index()
         {
+            DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("yyyy-MM-dd");
+            List<Datos> citas = _datos.cargarCitas(fechaFormateada);
+            ViewBag.Citas = citas;
             /*DateTime fecha = DateTime.Now;
             string fechaFormateada = fecha.ToString("yyyy-MM-dd HH:mm:ss");
             List<Datos> citas = _datos.cargarCitas(fechaFormateada);
@@ -29,7 +33,7 @@ namespace Juan_Arroyo_P1.Controllers
             {
                 TempData["IDCitaSetTable"] = citas[i].id_citaC;
             }*/
-            
+
             return View();
         }
         [HttpPost]

@@ -74,17 +74,27 @@
     </div>
     <div>
         <h3 class="titulo">Citas del Día</h3>
-        <table class="table table-hover mt-3">
-            <thead class="table-header">
+        <table class="table">
+            <thead>
                 <tr>
-                    <th>ID Cita</th>
-                    <th>ID Paciente</th>
+                    <th>Cédula</th>
+                    <th>Nombre</th>
+                    <th>Motivo de la Consulta</th>
                     <th>Fecha y Hora</th>
-                    <th>Motivo</th>
                     <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
+                @foreach (var cita in ViewBag.Citas)
+                {
+                    <tr>
+                        <td>@cita.cedulaP</td>
+                        <td>@cita.nombreP @cita.apellidoP</td>
+                        <td>@cita.motivo_consultaC</td>
+                        <td>@cita.fecha_horaC.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@cita.estadoC</td>
+                    </tr>
+                }
             </tbody>
         </table>
 
