@@ -15,6 +15,11 @@ namespace Juan_Arroyo_P1.Controllers
             _datos = datos;
             _logger = logger;
         }
+        public IActionResult RegistrarPaciente()
+        {
+            // Lógica para mostrar el formulario de registro de pacientes
+            return View();
+        }
         public IActionResult Index()
         {
             /*DateTime fecha = DateTime.Now;
@@ -47,7 +52,9 @@ namespace Juan_Arroyo_P1.Controllers
         {
             try
             {
-                if (_datos.BuscarPaciente(datos.cedulaP) == null)
+                var paciente = _datos.BuscarPaciente(datos.cedulaP);
+
+                if (paciente == null)
                 {
                     TempData["SuccessMessage"] = "Error: El paciente no fue encontrado.";
                     return RedirectToAction("Index");
@@ -55,7 +62,7 @@ namespace Juan_Arroyo_P1.Controllers
                 else
                 {
                     TempData["SuccessMessage"] = "Paciente encontrado.";
-                    TempData["IdPaciente"] = Convert.ToString(_datos.BuscarPaciente(datos.cedulaP).id_pacienteP);
+                    TempData["IdPaciente"] = Convert.ToString(paciente.id_pacienteP);
                     return RedirectToAction("Index");
                 }
             }
@@ -65,6 +72,21 @@ namespace Juan_Arroyo_P1.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+        public IActionResult Registrar(Datos datos)
+        {
+            try
+            {
+                _datos.RegistrarPaciente(datos);
+                TempData["SuccessMessage"] = "El paciente se guardo con exito.";
+                return RedirectToAction("RegistrarPaciente");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error: " + ex.Message;
+                return RedirectToAction("RegistrarPaciente");
+            }
+            return RedirectToAction("RegistrarPaciente");
         }
         public IActionResult Privacy()
         {

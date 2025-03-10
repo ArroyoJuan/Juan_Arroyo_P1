@@ -63,7 +63,6 @@ namespace Juan_Arroyo_P1.Models
                     string query = "Exec sp_Insertar_Cita @id_paciente,@fecha_hora,@motivo_consulta,@estado,@adicionado_por";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        Console.WriteLine("Texto: "+ datos.id_pacienteC);
                         cmd.Parameters.AddWithValue("@id_paciente",Convert.ToInt32(datos.id_pacienteC));
                         cmd.Parameters.AddWithValue("@fecha_hora", Convert.ToDateTime(datos.fecha_adicionC));
                         cmd.Parameters.AddWithValue("@motivo_consulta", Convert.ToString(datos.motivo_consultaC));
@@ -103,6 +102,42 @@ namespace Juan_Arroyo_P1.Models
                 }
             }
                 
+        }
+        public void RegistrarPaciente(Datos datos)
+        {
+            using (SqlConnection conn = new SqlConnection(_conexion))
+            {
+                try
+                {
+                    string query = "Exec sp_Insertar_Paciente @cedula,@nombre,@apellido,@telefono,@correo_electronico,@direccion,@fecha_nacimiento,@adicionado_por,@mensaje OUTPUT";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@cedula", Convert.ToString(datos.cedulaP));
+                        cmd.Parameters.AddWithValue("@nombre", Convert.ToString(datos.nombreP));
+                        cmd.Parameters.AddWithValue("@apellido", Convert.ToString(datos.apellidoP));
+                        cmd.Parameters.AddWithValue("@telefono", Convert.ToString(datos.telefonoP));
+                        cmd.Parameters.AddWithValue("@correo_electronico", Convert.ToString(datos.correo_electronicoP));
+                        cmd.Parameters.AddWithValue("@direccion", Convert.ToString(datos.direccionP));
+                        cmd.Parameters.AddWithValue("@fecha_nacimiento", Convert.ToDateTime(datos.fecha_nacimientoP));
+                        cmd.Parameters.AddWithValue("@adicionado_por", Convert.ToString("admin"));
+
+
+                        SqlParameter mensajeParam = new SqlParameter("@mensaje", SqlDbType.VarChar, 255);
+                        mensajeParam.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(mensajeParam);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+
+                        string mensaje = mensajeParam.Value.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al registrar pedido " + ex.Message);
+                }
+            }
         }
         /*public List<Datos> cargarCitas(string fechaNow)
         {

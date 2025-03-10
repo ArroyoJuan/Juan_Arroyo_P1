@@ -32,6 +32,13 @@
                 <button type="submit" class="btn btn-primary">Buscar</button>
             </div>
         </form>
+
+        <div>
+            @if (TempData["SuccessMessage"] != null && TempData["SuccessMessage"].ToString() == "Error: El paciente no fue encontrado.")
+            {
+                <button class="btn btn-info" onclick="window.location.href='@Url.Action("RegistrarPaciente", "Home")'">Registrar Paciente</button>
+            }
+        </div>
     </div>
     <div>
         <h3 class="titulo">Agendar Cita</h3>

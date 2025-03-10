@@ -1,0 +1,58 @@
+﻿@model Datos
+
+@{
+    ViewData["Title"] = "Registrar Paciente";
+}
+
+<h2 class="titulo">Registrar Paciente o Agendar Cita</h2>
+
+<label id="mensajeResultado">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    else if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+</label>
+
+<div>
+    <h3 class="titulo">Registrar Paciente</h3>
+    <form asp-action="Registrar" method="post">
+        <div>
+            <div class="form-group">
+                <label>Cédula:</label>
+                <input asp-for="cedulaP" type="text" class="form-control" />
+
+                <label>Nombre:</label>
+                <input asp-for="nombreP" type="text" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Apellido:</label>
+                <input asp-for="apellidoP" type="text" class="form-control" />
+
+                <label>Telefono:</label>
+                <input asp-for="telefonoP" type="text" class="form-control" />
+
+                <label>Correo Electronico:</label>
+                <input asp-for="correo_electronicoP" type="text" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Dirección:</label>
+                <textarea asp-for="direccionP" type="text" class="form-control"></textarea>
+            </div>
+            <div>
+                <label>Fecha de Nacimiento:</label>
+                <input asp-for="fecha_nacimientoP" type="datetime-local" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar Paciente</button>
+        </div>
+    </form>
+</div>
