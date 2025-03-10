@@ -17,6 +17,14 @@ namespace Juan_Arroyo_P1.Controllers
         }
         public IActionResult Index()
         {
+            /*DateTime fecha = DateTime.Now;
+            string fechaFormateada = fecha.ToString("yyyy-MM-dd HH:mm:ss");
+            List<Datos> citas = _datos.cargarCitas(fechaFormateada);
+            for (int i = 0; i < citas.Count; i++)
+            {
+                TempData["IDCitaSetTable"] = citas[i].id_citaC;
+            }*/
+            
             return View();
         }
         [HttpPost]
@@ -39,14 +47,15 @@ namespace Juan_Arroyo_P1.Controllers
         {
             try
             {
-                if (_datos.BuscarPaciente(datos) == "Paciente encontrado.")
+                if (_datos.BuscarPaciente(datos.cedulaP) == null)
                 {
-                    TempData["SuccessMessage"] = "Paciente encontrado.";
+                    TempData["SuccessMessage"] = "Error: El paciente no fue encontrado.";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Error: El paciente no existe.";
+                    TempData["SuccessMessage"] = "Paciente encontrado.";
+                    TempData["IdPaciente"] = Convert.ToString(_datos.BuscarPaciente(datos.cedulaP).id_pacienteP);
                     return RedirectToAction("Index");
                 }
             }
@@ -57,7 +66,6 @@ namespace Juan_Arroyo_P1.Controllers
             }
             return RedirectToAction("Index");
         }
-
         public IActionResult Privacy()
         {
             return View();

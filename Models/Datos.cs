@@ -10,7 +10,7 @@ namespace Juan_Arroyo_P1.Models
         public string apellidoP { get; set; }
         public string telefonoP { get; set; }
         public string correo_electronicoP { get; set; }
-        public string direccionP { get; set; }
+        public string direccionP { get; set; } 
         public DateTime fecha_nacimientoP { get; set; }
         public DateTime fecha_adicionP { get; set; }
         public string adicionado_porP { get; set; }
@@ -26,5 +26,9 @@ namespace Juan_Arroyo_P1.Models
         public string adicionado_porC { get; set; }
         public DateTime fecha_modificacionC { get; set; }
         public string modificado_porC { get; set; }
+        public string Mensaje { get; set; }
+        public Datos newTable { get; set; }
+        public List<Datos> GetTable { get; set; } = new List<Datos>();
+
     }
 }

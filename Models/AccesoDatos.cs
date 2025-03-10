@@ -2,7 +2,9 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Numerics;
 using static System.Reflection.Metadata.BlobBuilder;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Juan_Arroyo_P1.Models
 {
@@ -13,30 +15,38 @@ namespace Juan_Arroyo_P1.Models
         {
             _conexion = configuration.GetConnectionString("DefaultConnection");
         }
-        public string BuscarPaciente(Datos datos)
+        public Datos BuscarPaciente(string GetCedula) //Aqui cae la cedula
         {
             using (SqlConnection conn = new SqlConnection(_conexion))
             {
                 try
                 {
-                    //Primera parte validar si existe metodo
-                    string query = "Exec sp_Validar_Existencia_Paciente @id_paciente, @mensaje OUTPUT";
+                    //Sxript para buscar el id por cedula
+                    string query = "Exec sp_Obtener_Paciente_Por_Cedula @Cedula";
+                 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@id_paciente", datos.id_pacienteP);
-
-                        SqlParameter outputParam = new SqlParameter("@mensaje", SqlDbType.VarChar, 255);
-                        outputParam.Direction = ParameterDirection.Output;
-                        cmd.Parameters.Add(outputParam);
+                        cmd.Parameters.AddWithValue("@Cedula", GetCedula);
 
                         conn.Open();
-                        cmd.ExecuteNonQuery(); 
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read()) // Si hay resultados
+                            {
+                                Datos datos = new Datos
+                                {
+                                    id_pacienteP = Convert.ToInt32(reader["id_paciente"]),
+                                    cedulaP = Convert.ToString(reader["cedula"])
+                                };
 
-                        string mensaje = outputParam.Value.ToString();
-                        return mensaje;
+                                return datos;
+                            }
+                            else
+                            {
+                                return null; 
+                            }
+                        }
                     }
-
-
                 }
                 catch (Exception ex)
                 {
@@ -94,18 +104,60 @@ namespace Juan_Arroyo_P1.Models
             }
                 
         }
+        /*public List<Datos> cargarCitas(string fechaNow)
+        {
+            List<Datos> listaDatos = new List<Datos>();
+            using (SqlConnection conn = new SqlConnection(_conexion))
+            {
+                try
+                {
+                    //Sxript para buscar el id por cedula
+                    string query = "SELECT * FROM Citas";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@fecha", fechaNow);
+
+                        conn.Open();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Datos datos = new Datos
+                                {
+                                    id_citaC = Convert.ToInt32(reader["id_cita"]),
+                                    id_pacienteC = Convert.ToInt32(reader["id_paciente"]),
+                                    fecha_horaC = Convert.ToDateTime(reader["fecha_hora"]),
+                                    motivo_consultaC = Convert.ToString(reader["motivo_consulta"]),
+                                    estadoC = Convert.ToString(reader["estado"])
+                                };
+                                listaDatos.Add(datos);
+                            }
+                        }
+                    }
+                    return listaDatos.Count > 0 ? listaDatos : null;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error: " + ex.Message);
+                }
+            }
+        }*/
     }
 }
-/*string checkPacienteQuery = $"SELECT COUNT(1) FROM Pacientes WHERE id_paciente = @id_pacienteR";
-                    SqlCommand checkPacienteCmd = new SqlCommand(checkPacienteQuery, conn);
-
-                    // Agregar el parámetro correctamente
-                    checkPacienteCmd.Parameters.AddWithValue("@id_pacienteR", citas.id_pacienteC);
-
-                    conn.Open();
-                    int count = (int)checkPacienteCmd.ExecuteScalar();
-
-                    if (count == 0)
+/*//Primera parte validar si existe metodo
+                    string query = "Exec sp_Validar_Existencia_Paciente @id_paciente, @mensaje OUTPUT";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        throw new Exception("Error: El paciente no existe en la base de datos.");
+                        cmd.Parameters.AddWithValue("@id_paciente", datos.id_pacienteP);
+
+                        SqlParameter outputParam = new SqlParameter("@mensaje", SqlDbType.VarChar, 255);
+                        outputParam.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(outputParam);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery(); 
+
+                        string mensaje = outputParam.Value.ToString();
+                        return mensaje;
                     }*/

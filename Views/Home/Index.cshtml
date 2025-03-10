@@ -5,30 +5,30 @@
 }
 
 <h2 class="titulo">Registrar Paciente o Agendar Cita</h2>
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["SuccessMessage"]
-    </div>
-}
 
 <label id="mensajeResultado">
     @if (TempData["SuccessMessage"] != null)
     {
-        <span class="text-success">@TempData["SuccessMessage"]</span>
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
     }
     else if (TempData["ErrorMessage"] != null)
     {
-        <span class="text-danger">@TempData["ErrorMessage"]</span>
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
     }
 </label>
+
+
 <div>
     <div>
         <h3 class="titulo">Buscar Paciente por Cédula</h3>
         <form asp-action="buscar" method="post">
             <div class="box_IngreseCedula">
-                <label>Ingrese codigo:</label>
-                <input asp-for="id_pacienteP" type="text" class="form-control" />
+                <label>Ingrese su cédula:</label>
+                <input asp-for="cedulaP" type="text" class="form-control" />
                 <button type="submit" class="btn btn-primary">Buscar</button>
             </div>
         </form>
@@ -39,7 +39,7 @@
             <div class="box_IngresarDatosCita">
                 <div class="form-group">
                     <label>Id Paciente:</label>
-                    <input asp-for="id_pacienteC" type="text" class="form-control" />
+                    <input asp-for="id_pacienteC" type="text" class="form-control" value="@TempData["IdPaciente"]" readonly/>
                 </div>
 
                 <div class="form-group">
@@ -67,6 +67,20 @@
     </div>
     <div>
         <h3 class="titulo">Citas del Día</h3>
+        <table class="table table-hover mt-3">
+            <thead class="table-header">
+                <tr>
+                    <th>ID Cita</th>
+                    <th>ID Paciente</th>
+                    <th>Fecha y Hora</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
         <form asp-action="Procesar" asp-route-tipo="testeos" method="post">
             <button type="submit" class="btn btn-secondary">Testar</button>
         </form>
