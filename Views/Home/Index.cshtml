@@ -3,33 +3,62 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-<h2 class="titulo">Registrar Paciente o Agendar Cita</h2>
-
-<label id="mensajeResultado">
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["SuccessMessage"]
-        </div>
+<style>
+    body {
+        background-color: #FAEBD7;
     }
-    else if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
+    .titulo {
+        color: #5D4037;
+        font-weight: bold;
+        border-bottom: 3px solid #8D6E63;
+        padding-bottom: 5px;
     }
-</label>
 
+    table{
+        background-color: white;
+    }
 
-<div>
-    <div>
+    .boxes{
+        margin-top: 30px;
+        width: 35%;
+    }
+
+    .boxMaster{
+        position: absolute;
+        left:48%;
+        top:25%;
+    }
+    button{
+        background-color: 5D4037;
+        color:white;
+    }
+</style>
+
+<div class="container">
+    <h2 class="titulo text-center mt-5">Registrar Paciente o Agendar Cita</h2>
+
+    <div id="mensajeResultado" class="mt-3">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        else if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+    </div>
+
+    <div class="p-4 shadow-lg boxes">
         <h3 class="titulo">Buscar Paciente por Cédula</h3>
         <form asp-action="buscar" method="post">
-            <div class="box_IngreseCedula">
+            <div class="box_IngreseCedula mb-4">
                 <label>Ingrese su cédula:</label>
-                <input asp-for="cedulaP" type="text" class="form-control" />
-                <button type="submit" class="btn btn-primary">Buscar</button>
+                <input asp-for="cedulaP" type="text" class="form-control" placeholder="0-0000-0000" />
+                <button type="submit" class="btn btn-primary mt-2">Buscar</button>
             </div>
         </form>
 
@@ -40,13 +69,14 @@
             }
         </div>
     </div>
-    <div>
+
+    <div class="p-4 shadow-lg boxes">
         <h3 class="titulo">Agendar Cita</h3>
         <form asp-action="Agendar" method="post">
-            <div class="box_IngresarDatosCita">
+            <div class="box_IngresarDatosCita mb-4">
                 <div class="form-group">
                     <label>Id Paciente:</label>
-                    <input asp-for="id_pacienteC" type="text" class="form-control" value="@TempData["IdPaciente"]" readonly/>
+                    <input asp-for="id_pacienteC" type="text" class="form-control" value="@TempData["IdPaciente"]" readonly placeholder="00" />
                 </div>
 
                 <div class="form-group">
@@ -56,7 +86,7 @@
 
                 <div class="form-group">
                     <label>Motivo de la Consulta:</label>
-                    <input asp-for="motivo_consultaC" type="text" class="form-control" />
+                    <input asp-for="motivo_consultaC" type="text" class="form-control" placeholder="Motivo..." />
                 </div>
 
                 <div class="form-group">
@@ -68,38 +98,37 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Agentar Cita</button>
+                <button type="submit" class="btn btn-primary mt-2">Agendar Cita</button>
             </div>
         </form>
     </div>
-    <div>
-        <h3 class="titulo">Citas del Día</h3>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Cédula</th>
-                    <th>Nombre</th>
-                    <th>Motivo de la Consulta</th>
-                    <th>Fecha y Hora</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var cita in ViewBag.Citas)
-                {
-                    <tr>
-                        <td>@cita.cedulaP</td>
-                        <td>@cita.nombreP @cita.apellidoP</td>
-                        <td>@cita.motivo_consultaC</td>
-                        <td>@cita.fecha_horaC.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>@cita.estadoC</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
 
-        <form asp-action="Procesar" asp-route-tipo="testeos" method="post">
-            <button type="submit" class="btn btn-secondary">Testar</button>
-        </form>
+    <div class="boxMaster">
+        <div class="p-4 shadow-lg">
+            <h3 class="titulo">Citas Agendadas</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Motivo de la Consulta</th>
+                        <th>Fecha y Hora</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cita in ViewBag.Citas)
+                    {
+                        <tr>
+                            <td>@cita.cedulaP</td>
+                            <td>@cita.nombreP @cita.apellidoP</td>
+                            <td>@cita.motivo_consultaC</td>
+                            <td>@cita.fecha_horaC.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@cita.estadoC</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

@@ -4,6 +4,37 @@
     ViewData["Title"] = "Registrar Paciente";
 }
 
+<style>
+    body {
+        background-color: #FAEBD7;
+    }
+    .titulo {
+        color: #5D4037;
+        font-weight: bold;
+        border-bottom: 3px solid #8D6E63;
+        padding-bottom: 5px;
+    }
+
+    table{
+        background-color: white;
+    }
+
+    .boxes{
+        margin-top: 30px;
+        width: 35%;
+    }
+
+    .boxMaster{
+        position: absolute;
+        left:48%;
+        top:25%;
+    }
+    button{
+        background-color: 5D4037;
+        color:white;
+    }
+</style>
+
 <h2 class="titulo">Registrar Paciente o Agendar Cita</h2>
 
 <label id="mensajeResultado">
@@ -22,31 +53,32 @@
 </label>
 
 <div>
-    <h3 class="titulo">Registrar Paciente</h3>
     <form asp-action="Registrar" method="post">
-        <div>
+        <div class="boxes p-4 shadow-lg ">
             <div class="form-group">
                 <label>Cédula:</label>
-                <input asp-for="cedulaP" type="text" class="form-control" />
+                <input asp-for="cedulaP" type="text" class="form-control" placeholder="0-0000-0000" />
+                <span asp-validation-for="cedulaP" class="text-danger"></span>
 
                 <label>Nombre:</label>
-                <input asp-for="nombreP" type="text" class="form-control" />
+                <input asp-for="nombreP" type="text" class="form-control" placeholder="Nombre..." />
             </div>
 
             <div class="form-group">
                 <label>Apellido:</label>
-                <input asp-for="apellidoP" type="text" class="form-control" />
+                <input asp-for="apellidoP" type="text" class="form-control" placeholder="Apellido..." />
 
                 <label>Telefono:</label>
-                <input asp-for="telefonoP" type="text" class="form-control" />
+                <input asp-for="telefonoP" type="text" class="form-control" placeholder="Telefono..." />
 
                 <label>Correo Electronico:</label>
-                <input asp-for="correo_electronicoP" type="text" class="form-control" />
+                <input asp-for="correo_electronicoP" type="text" class="form-control" placeholder="@ViewBag.CorreoPlaceholder" />
+                <span asp-validation-for="correo_electronicoP" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label>Dirección:</label>
-                <textarea asp-for="direccionP" type="text" class="form-control"></textarea>
+                <textarea asp-for="direccionP" type="text" class="form-control" placeholder="Dirección..."></textarea>
             </div>
             <div>
                 <label>Fecha de Nacimiento:</label>

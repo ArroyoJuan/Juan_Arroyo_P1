@@ -5,11 +5,19 @@ namespace Juan_Arroyo_P1.Models
     public class Datos
     {
         public int id_pacienteP { get; set; }
+        [Required(ErrorMessage = "El cedula es obligatorio")]
         public string cedulaP { get; set; }
+        [Required(ErrorMessage = "El nombre es obligatorio")]
         public string nombreP { get; set; }
+        [Required(ErrorMessage = "El apellido es obligatorio")]
         public string apellidoP { get; set; }
+        [Required(ErrorMessage = "El telefono es obligatorio")]
         public string telefonoP { get; set; }
+        [Required(ErrorMessage = "El correo electrónico es obligatorio")]
+        [EmailAddress(ErrorMessage = "Formato de correo no válido")]
         public string correo_electronicoP { get; set; }
+        [Required(ErrorMessage = "La dirección es obligatorio")]
+        [StringLength(500, ErrorMessage = "La dirección no puede superar los 500 caracteres")]
         public string direccionP { get; set; } 
         public DateTime fecha_nacimientoP { get; set; }
         public DateTime fecha_adicionP { get; set; }
@@ -30,5 +38,10 @@ namespace Juan_Arroyo_P1.Models
         public Datos newTable { get; set; }
         public List<Datos> GetTable { get; set; } = new List<Datos>();
 
+    }
+    public class ContactViewModel
+    {
+        public Datos NuevoMensaje { get; set; }
+        public List<Datos> Mensajes { get; set; } = new List<Datos>();
     }
 }

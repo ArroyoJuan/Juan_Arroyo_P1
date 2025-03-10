@@ -79,7 +79,7 @@ namespace Juan_Arroyo_P1.Models
                 }
             }
         }
-        public string testeos()
+        public string testeos()//No se utiliza, solo era para validar el funcionamiento del codigo
         {
             using (SqlConnection conn = new SqlConnection(_conexion))
             {
